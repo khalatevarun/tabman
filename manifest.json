@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Tabman",
+  "version": "1.0",
+  "description": "Find your way to the lost tab",
+  "action": {
+    "default_popup": "popup.html"
+  },
+ "permissions": ["tabs"],
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+F",
+        "mac": "Command+Shift+L"
+      },
+      "description": "Find your way to the lost"
+    }
+  }
+}
