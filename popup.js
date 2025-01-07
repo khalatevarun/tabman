@@ -162,7 +162,6 @@ function escapeHtml(unsafe) {
     .replace(/'/g, "&#039;");
 }
 
-// New function to handle duplicate tabs
 async function loadDuplicateTabs() {
   try {
     const windows = await chrome.windows.getAll({ populate: true });
@@ -190,42 +189,31 @@ async function loadDuplicateTabs() {
       }
     });
 
-    // Update stats
-    statsContainer.textContent = `Found ${duplicateGroups.length} sets of duplicate tabs`;
+    // Update stats with chip style
+    statsContainer.textContent = `${duplicateGroups.length} set of duplicate${duplicateGroups.length !== 1 ? 's' : ''} found`;
 
     // Display duplicate groups
     duplicateGroups.forEach(tabs => {
       const groupElement = document.createElement('div');
       groupElement.className = 'duplicate-group';
       
-      const { tab } = tabs[0];
+      const { tab } = tabs[tabs.length - 1]; // Get the latest tab
       groupElement.innerHTML = `
         <div class="duplicate-header">
           <img src="${tab.favIconUrl || 'default-favicon.png'}" class="tab-icon" alt="">
           <div class="duplicate-info">
             <div class="tab-title">${escapeHtml(tab.title)}</div>
-            <div class="tab-url">${escapeHtml(tab.url)}</div>
-            <div class="duplicate-count">${tabs.length} duplicate tabs</div>
+            <span class="duplicate-count">${tabs.length} duplicates</span>
           </div>
-        </div>
-        <div class="duplicate-actions">
-          <button class="merge-button">Merge All</button>
-          <button class="keep-one-button">Keep First</button>
+          <button class="keep-latest-button">Keep Latest</button>
         </div>
       `;
 
-      // Add click handlers
-      const mergeButton = groupElement.querySelector('.merge-button');
-      const keepOneButton = groupElement.querySelector('.keep-one-button');
-
-      mergeButton.addEventListener('click', async () => {
-        const tabIds = tabs.slice(1).map(t => t.tab.id);
-        await chrome.tabs.remove(tabIds);
-        loadDuplicateTabs(); // Refresh list
-      });
-
-      keepOneButton.addEventListener('click', async () => {
-        const tabIds = tabs.slice(1).map(t => t.tab.id);
+      // Add click handler
+      const keepLatestButton = groupElement.querySelector('.keep-latest-button');
+      keepLatestButton.addEventListener('click', async () => {
+        // Keep the latest tab (last in array) and close others
+        const tabIds = tabs.slice(0, -1).map(t => t.tab.id);
         await chrome.tabs.remove(tabIds);
         loadDuplicateTabs(); // Refresh list
       });

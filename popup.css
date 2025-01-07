@@ -188,46 +188,29 @@ body {
   white-space: nowrap;
 }
 
-/* Manage Tab Styles */
+/* Update existing duplicate group styles */
 .duplicate-group {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   border-radius: 8px;
-  margin-bottom: 12px;
-  padding: 12px;
+  margin-bottom: 8px;
+  padding: 8px 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.duplicate-group:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-1px);
+  transition: all 0.2s ease;
 }
 
 .duplicate-header {
   display: flex;
-  gap: 12px;
   align-items: center;
+  gap: 10px;
 }
 
 .duplicate-info {
   flex: 1;
   min-width: 0;
-}
-
-.duplicate-info .tab-title {
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: 500;
-  margin-bottom: 4px;
-}
-
-.duplicate-info .tab-url {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 12px;
-  margin-bottom: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .duplicate-count {
@@ -237,44 +220,28 @@ body {
   padding: 2px 8px;
   border-radius: 12px;
   display: inline-block;
+  align-self: flex-start;
 }
 
-.duplicate-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  flex-wrap: wrap;
-}
-
-.merge-button, .keep-one-button {
+.keep-latest-button {
   padding: 6px 12px;
   border-radius: 6px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(79, 70, 229, 0.2);
   color: white;
   font-size: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  white-space: nowrap;
 }
 
-.merge-button {
-  background: rgba(79, 70, 229, 0.2);
-}
-
-.keep-one-button {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.merge-button:hover {
+.keep-latest-button:hover {
   background: rgba(79, 70, 229, 0.3);
 }
 
-.keep-one-button:hover {
-  background: rgba(255, 255, 255, 0.2);
+/* Remove unused styles */
+.duplicate-actions {
+  display: none;
 }
 
 /* Scrollbar Styling */
