@@ -6,8 +6,29 @@
 </head>
 <body>
   <div class="container">
-    <input type="text" id="searchInput" placeholder="Search tabs..." autofocus>
-    <div id="results"></div>
+    <nav class="tab-nav">
+      <button class="tab-button active" data-tab="search">Search</button>
+      <button class="tab-button" data-tab="manage">Manage</button>
+    </nav>
+    
+    <div class="tab-content">
+      <!-- Search Tab -->
+      <div id="search-tab" class="tab-pane active">
+        <input type="text" id="searchInput" placeholder="Search tabs..." autofocus>
+        <div style="display: flex; justify-content: center;">
+          <div id="searchStatsContainer"></div>
+        </div>
+        <div id="searchResults"></div>
+      </div>
+
+      <!-- Manage Tab -->
+      <div id="manage-tab" class="tab-pane">
+        <div style="display: flex; justify-content: center;">
+          <div id="manageStatsContainer"></div>
+        </div>
+        <div id="duplicateResults"></div>
+      </div>
+    </div>
   </div>
   <script src="popup.js"></script>
 </body>

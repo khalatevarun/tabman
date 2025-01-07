@@ -1,3 +1,11 @@
+:root {
+  color-scheme: light dark;
+}
+
+html {
+  background: transparent !important;
+}
+
 body {
   width: 400px;
   max-height: 500px;
@@ -11,40 +19,142 @@ body {
 }
 
 .container {
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
   padding: 12px;
+  box-sizing: border-box;
 }
 
+/* Tab Navigation */
+.tab-nav {
+  margin: -12px -12px 12px -12px;
+  padding: 0 12px;
+  width: calc(100% + 24px);
+  box-sizing: border-box;
+  display: flex;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tab-button {
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  font-size: 14px;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.tab-button:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.tab-button.active {
+  color: white;
+}
+
+.tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+}
+
+/* Tab Content */
+.tab-pane {
+  display: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+/* Search Tab Styling */
 #searchInput {
   width: 100%;
-  padding: 8px 12px;
+  padding: 10px 14px;
   font-size: 14px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: white;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+  margin-bottom: 12px;
   box-sizing: border-box;
-  margin-bottom: 8px;
 }
 
-#results {
+#searchInput:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+#searchInput::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Stats Container */
+#searchStatsContainer, #manageStatsContainer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 4px 12px;
+  margin: 0 0 12px 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+/* Search Results */
+#searchResults {
   max-height: 400px;
   overflow-y: auto;
+  padding-right: 4px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .tab-item {
-  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
   cursor: pointer;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 5px;
-  transition: background 0.3s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.tab-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.tab-item.selected {
+  background: rgba(79, 70, 229, 0.2);
+  border-color: rgba(79, 70, 229, 0.3);
 }
 
 .tab-content {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 
 .tab-icon {
@@ -56,34 +166,136 @@ body {
 
 .tab-info {
   flex: 1;
-  min-width: 0; /* Helps with text overflow */
+  min-width: 0;
+  width: calc(100% - 28px);
 }
 
-/* Add this to handle long URLs/titles */
-.tab-title, .tab-url {
+.tab-title {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  margin-bottom: 4px;
+  font-size: 14px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.tab-item:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.tab-item.selected {
-  background: rgba(255, 255, 255, 0.4);
-}
-
-.tab-title {
-  font-size: 14px;
-}
-
 .tab-url {
+  color: rgba(255, 255, 255, 0.6);
   font-size: 12px;
-  color: gray;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.window-label {
-  font-size: 10px;
-  color: darkgray;
+/* Manage Tab Styles */
+.duplicate-group {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.duplicate-group:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.duplicate-header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.duplicate-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.duplicate-info .tab-title {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.duplicate-info .tab-url {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.duplicate-count {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.duplicate-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  flex-wrap: wrap;
+}
+
+.merge-button, .keep-one-button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.merge-button {
+  background: rgba(79, 70, 229, 0.2);
+}
+
+.keep-one-button {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.merge-button:hover {
+  background: rgba(79, 70, 229, 0.3);
+}
+
+.keep-one-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Scrollbar Styling */
+#searchResults::-webkit-scrollbar,
+#duplicateResults::-webkit-scrollbar {
+  width: 8px;
+}
+
+#searchResults::-webkit-scrollbar-track,
+#duplicateResults::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+#searchResults::-webkit-scrollbar-thumb,
+#duplicateResults::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+#searchResults::-webkit-scrollbar-thumb:hover,
+#duplicateResults::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
