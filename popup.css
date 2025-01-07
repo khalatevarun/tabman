@@ -266,3 +266,57 @@ body {
 #duplicateResults::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
 }
+
+/* Windows Organization Styles */
+.windows-container {
+  max-height: 450px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.window-group {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.window-header {
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.window-tabs {
+  padding: 8px;
+  min-height: 40px;
+}
+
+.draggable-tab {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 8px;
+  margin-bottom: 6px;
+  cursor: move;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.draggable-tab:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.draggable-tab.dragging {
+  opacity: 0.5;
+  background: rgba(79, 70, 229, 0.2);
+}
+
+.window-tabs.drag-over {
+  background: rgba(79, 70, 229, 0.1);
+}

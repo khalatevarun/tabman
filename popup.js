@@ -2,6 +2,7 @@ let selectedIndex = -1;
 const maxResults = 100;
 
 document.addEventListener('DOMContentLoaded', () => {
+  
   // Tab Navigation
   const tabButtons = document.querySelectorAll('.tab-button');
   tabButtons.forEach(button => {
@@ -19,6 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (tabId === 'search') {
         document.getElementById('searchInput').focus();
         searchTabs('');
+      }
+      else if (tabId === 'organize') {
+        loadWindowsAndTabs();
       } else if (tabId === 'manage') {
         loadDuplicateTabs();
       }
@@ -225,5 +229,101 @@ async function loadDuplicateTabs() {
     console.error('Error loading duplicate tabs:', error);
     document.getElementById('duplicateResults').innerHTML = 
       '<div style="padding: 8px; color: red;">Error accessing tabs</div>';
+  }
+}
+
+
+async function loadWindowsAndTabs() {
+  try {
+    const windows = await chrome.windows.getAll({ populate: true });
+    const container = document.getElementById('windowsContainer');
+    container.innerHTML = '';
+
+    windows.forEach(window => {
+      const windowElement = document.createElement('div');
+      windowElement.className = 'window-group';
+      windowElement.innerHTML = `
+        <div class="window-header">
+          <span>Window ${window.id}</span>
+          <span>${window.tabs.length} tabs</span>
+        </div>
+        <div class="window-tabs" data-window-id="${window.id}">
+          ${window.tabs.map(tab => `
+            <div class="draggable-tab" draggable="true" data-tab-id="${tab.id}">
+              <img src="${tab.favIconUrl || 'default-favicon.png'}" class="tab-icon" alt="">
+              <div class="tab-info">
+                <div class="tab-title">${escapeHtml(tab.title)}</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+
+      container.appendChild(windowElement);
+    });
+
+    // Add drag and drop handlers
+    setupDragAndDrop();
+  } catch (error) {
+    console.error('Error loading windows and tabs:', error);
+  }
+}
+
+function setupDragAndDrop() {
+  const draggableTabs = document.querySelectorAll('.draggable-tab');
+  const dropZones = document.querySelectorAll('.window-tabs');
+
+  draggableTabs.forEach(tab => {
+    tab.addEventListener('dragstart', handleDragStart);
+    tab.addEventListener('dragend', handleDragEnd);
+  });
+
+  dropZones.forEach(zone => {
+    zone.addEventListener('dragover', handleDragOver);
+    zone.addEventListener('dragleave', handleDragLeave);
+    zone.addEventListener('drop', handleDrop);
+  });
+}
+
+function handleDragStart(e) {
+  e.target.classList.add('dragging');
+  e.dataTransfer.setData('text/plain', JSON.stringify({
+    tabId: e.target.dataset.tabId,
+    sourceWindowId: e.target.closest('.window-tabs').dataset.windowId
+  }));
+}
+
+function handleDragEnd(e) {
+  e.target.classList.remove('dragging');
+  document.querySelectorAll('.window-tabs').forEach(zone => {
+    zone.classList.remove('drag-over');
+  });
+}
+
+function handleDragOver(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add('drag-over');
+}
+
+function handleDragLeave(e) {
+  e.currentTarget.classList.remove('drag-over');
+}
+
+async function handleDrop(e) {
+  e.preventDefault();
+  const dropZone = e.currentTarget;
+  dropZone.classList.remove('drag-over');
+
+  const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+  const targetWindowId = parseInt(dropZone.dataset.windowId);
+  const tabId = parseInt(data.tabId);
+
+  if (targetWindowId !== parseInt(data.sourceWindowId)) {
+    try {
+      await chrome.tabs.move(tabId, { windowId: targetWindowId, index: -1 });
+      loadWindowsAndTabs(); // Refresh the view
+    } catch (error) {
+      console.error('Error moving tab:', error);
+    }
   }
 }
