@@ -2,7 +2,7 @@
   <img src="https://github.com/user-attachments/assets/68169d3a-e3c3-4e91-b3bd-b3535582265f" alt="Tabman Logo" width="64"/>
 </p>
 
-# Tabman - Navigate, Manage and Organise Tabs with Ease
+# Tabman - Fighting Tab Chaos, One Window at a Time
 
 ## Overview
 
