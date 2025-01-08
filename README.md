@@ -6,7 +6,7 @@
 
 ## Overview
 
-Tabman is a Chrome extension that brings powerful tab management capabilities to your browser. With a modern glass-morphism UI and intuitive features, it helps you stay organized while working with multiple tabs and windows.
+Tabman is a Chrome extension that brings powerful tab management capabilities to your browser. Its intuitive features helps you stay organized while working with multiple tabs and windows.
 
 ## Features
 
