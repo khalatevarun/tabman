@@ -7,6 +7,9 @@
     "32": "icons/icon32.png",
     "64": "icons/icon64.png"
   },
+  "background": {
+    "service_worker": "background.js"
+  },
   "action": {
     "default_icon": {
       "32": "icons/icon32.png",
@@ -14,7 +17,11 @@
     },
     "default_popup": "popup.html"
   },
-"permissions": ["tabs", "storage"],
+  "permissions": [
+    "tabs",
+    "storage",
+    "alarms"
+  ],
   "commands": {
     "_execute_action": {
       "suggested_key": {

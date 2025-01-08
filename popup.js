@@ -26,6 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (tabId === 'manage') {
         loadDuplicateTabs();
       }
+      else if (tabId === 'screentime') {
+        loadScreenTime();
+      }
     });
   });
 
@@ -391,3 +394,28 @@ async function handleDrop(e) {
   }
 }
 
+async function loadScreenTime() {
+  const screenTimeResults = document.getElementById('screentimeResults');
+  screenTimeResults.innerHTML = '';
+
+  const { screenTime } = await chrome.storage.local.get('screenTime');
+  if (!screenTime) {
+    screenTimeResults.textContent = 'No data available.';
+    return;
+  }
+
+  const sortedDomains = Object.entries(screenTime).sort((a, b) => b[1] - a[1]);
+  sortedDomains.forEach(([domain, time]) => {
+    const timeSpent = (time / 1000 / 60).toFixed(2); // Convert to minutes
+    const domainElement = document.createElement('div');
+    domainElement.className = 'screentime-item';
+    domainElement.innerHTML = `
+      <div class="screentime-domain">${escapeHtml(domain)}</div>
+      <div class="screentime-bar">
+        <div class="screentime-bar-fill" style="width: ${Math.min(timeSpent / 60 * 100, 100)}%;"></div>
+      </div>
+      <div class="screentime-time">${timeSpent} minutes</div>
+    `;
+    screenTimeResults.appendChild(domainElement);
+  });
+}
