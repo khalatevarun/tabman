@@ -6,7 +6,7 @@
   "action": {
     "default_popup": "popup.html"
   },
- "permissions": ["tabs"],
+"permissions": ["tabs", "storage"],
   "commands": {
     "_execute_action": {
       "suggested_key": {

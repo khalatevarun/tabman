@@ -239,13 +239,26 @@ async function loadWindowsAndTabs() {
     const container = document.getElementById('windowsContainer');
     container.innerHTML = '';
 
+    // Get saved window names from storage
+    const windowNames = await getWindowNames();
+
     windows.forEach(window => {
       const windowElement = document.createElement('div');
       windowElement.className = 'window-group';
+      const windowName = windowNames[window.id] || `Window ${window.id}`;
+      
       windowElement.innerHTML = `
         <div class="window-header">
-          <span>Window ${window.id}</span>
-          <span>${window.tabs.length} tabs</span>
+          <div class="window-title-group">
+            <span class="window-name" data-window-id="${window.id}">${escapeHtml(windowName)}</span>
+            <button class="edit-name-button" title="Edit window name">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+            </button>
+          </div>
+          <span class="tab-count">${window.tabs.length} tabs</span>
         </div>
         <div class="window-tabs" data-window-id="${window.id}">
           ${window.tabs.map(tab => `
@@ -259,13 +272,63 @@ async function loadWindowsAndTabs() {
         </div>
       `;
 
+      // Add edit name functionality
+      const editButton = windowElement.querySelector('.edit-name-button');
+      const windowNameSpan = windowElement.querySelector('.window-name');
+      
+      editButton.addEventListener('click', () => {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'window-name-input';
+        input.value = windowNameSpan.textContent;
+        
+        windowNameSpan.replaceWith(input);
+        input.focus();
+        
+        input.addEventListener('blur', async () => {
+          const newName = input.value.trim() || `Window ${window.id}`;
+          await saveWindowName(window.id, newName);
+          input.replaceWith(windowNameSpan);
+          windowNameSpan.textContent = newName;
+        });
+        
+        input.addEventListener('keydown', async (e) => {
+          if (e.key === 'Enter') {
+            input.blur();
+          } else if (e.key === 'Escape') {
+            input.value = windowNameSpan.textContent;
+            input.blur();
+          }
+        });
+      });
+
       container.appendChild(windowElement);
     });
 
-    // Add drag and drop handlers
     setupDragAndDrop();
   } catch (error) {
     console.error('Error loading windows and tabs:', error);
+  }
+}
+
+// Helper functions for window name storage
+async function getWindowNames() {
+  try {
+    const data = await chrome.storage.local.get('windowNames');
+    return data.windowNames || {};
+  } catch (error) {
+    console.error('Error getting window names:', error);
+    return {};
+  }
+}
+
+async function saveWindowName(windowId, name) {
+  try {
+    const windowNames = await getWindowNames();
+    windowNames[windowId] = name;
+    await chrome.storage.local.set({ windowNames });
+  } catch (error) {
+    console.error('Error saving window name:', error);
   }
 }
 
@@ -327,3 +390,4 @@ async function handleDrop(e) {
     }
   }
 }
+
