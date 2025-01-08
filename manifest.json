@@ -2,8 +2,16 @@
   "manifest_version": 3,
   "name": "Tabman",
   "version": "1.0",
-  "description": "Find your way to the lost tab",
+  "description": "Navigate through your tabs with ease",
+  "icons": {
+    "32": "icons/icon32.png",
+    "64": "icons/icon64.png"
+  },
   "action": {
+    "default_icon": {
+      "32": "icons/icon32.png",
+    "64": "icons/icon64.png"
+    },
     "default_popup": "popup.html"
   },
 "permissions": ["tabs", "storage"],
@@ -13,7 +21,7 @@
         "default": "Ctrl+Shift+F",
         "mac": "Command+Shift+L"
       },
-      "description": "Find your way to the lost"
+      "description": "Navigate through your tabs with ease"
     }
   }
 }
